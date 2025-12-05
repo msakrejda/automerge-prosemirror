@@ -1,6 +1,6 @@
 # Automerge prosemirror bindings
 
-Collaborate on rich text documents which follow the [rich text schema](https://automerge.org/docs/under-the-hood/rich_text_schema/) using ProseMirror.
+Collaborate on rich text documents which follow the [rich text schema](https://automerge.org/docs/reference/under-the-hood/rich-text-schema/) using ProseMirror.
 
 ## Status
 
