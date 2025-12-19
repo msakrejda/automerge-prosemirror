@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Editor } from "./Editor"
-import { Repo, DocHandle } from "@automerge/automerge-repo"
+import { Repo, DocHandle, DocHandleChangePayload } from "@automerge/automerge-repo"
 //import { MessageChannelNetworkAdapter } from "@automerge/automerge-repo-network-messagechannel"
 import { PausableNetworkAdapter } from "./PausableNetworkAdapter"
 import TabContainer from "./Tabs"
@@ -188,12 +188,23 @@ function DebugEditor({
   debug?: boolean
 }) {
   const [spans, setSpans] = useState(Automerge.spans(handle.doc(), path))
-  handle.on("change", (payload) => {
-    setSpans(Automerge.spans(payload.doc, ["text"]))
-  })
+  useEffect(() => {
+    if (!debug) {
+      return;
+    }
+    function listener(payload: DocHandleChangePayload<unknown>) {
+      setSpans(Automerge.spans(payload.doc, ["text"]))
+    }
+    handle.on("change", listener)
+
+    return () => {
+      handle.off("change", listener)
+    }
+  }, [ debug, handle] )
+
   const [editorState, setEditorState] = useState<EditorState | undefined>(undefined);
   function handleEditorStateChange(state: EditorState) {
-    setEditorState(state);
+    setEditorState(state)
   }
 
   return (
