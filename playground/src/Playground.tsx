@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { Editor } from "./Editor"
-import { Repo, DocHandle, DocHandleChangePayload } from "@automerge/automerge-repo"
+import {
+  Repo,
+  DocHandle,
+  DocHandleChangePayload,
+} from "@automerge/automerge-repo"
 //import { MessageChannelNetworkAdapter } from "@automerge/automerge-repo-network-messagechannel"
 import { PausableNetworkAdapter } from "./PausableNetworkAdapter"
 import TabContainer from "./Tabs"
@@ -118,7 +122,12 @@ type TabProps = {
   showDebug: boolean
 }
 
-function SameSchema({ leftHandle, rightHandle, showTitle, showDebug }: TabProps) {
+function SameSchema({
+  leftHandle,
+  rightHandle,
+  showTitle,
+  showDebug,
+}: TabProps) {
   return (
     <div>
       {showTitle && <h2>Same Schema</h2>}
@@ -146,7 +155,12 @@ function SameSchema({ leftHandle, rightHandle, showTitle, showDebug }: TabProps)
   )
 }
 
-function DifferentSchema({ leftHandle, rightHandle, showTitle, showDebug }: TabProps) {
+function DifferentSchema({
+  leftHandle,
+  rightHandle,
+  showTitle,
+  showDebug,
+}: TabProps) {
   return (
     <div>
       {showTitle && <h2>Different Schema</h2>}
@@ -190,7 +204,7 @@ function DebugEditor({
   const [spans, setSpans] = useState(Automerge.spans(handle.doc(), path))
   useEffect(() => {
     if (!debug) {
-      return;
+      return
     }
     function listener(payload: DocHandleChangePayload<unknown>) {
       setSpans(Automerge.spans(payload.doc, ["text"]))
@@ -200,9 +214,11 @@ function DebugEditor({
     return () => {
       handle.off("change", listener)
     }
-  }, [ debug, handle] )
+  }, [debug, handle])
 
-  const [editorState, setEditorState] = useState<EditorState | undefined>(undefined);
+  const [editorState, setEditorState] = useState<EditorState | undefined>(
+    undefined,
+  )
   function handleEditorStateChange(state: EditorState) {
     setEditorState(state)
   }
@@ -217,24 +233,19 @@ function DebugEditor({
         onStateChange={handleEditorStateChange}
       />
       {debug && (
-        <div style={{display: 'flex'}}>
+        <div style={{ display: "flex" }}>
           <div>
             <span>ProseMirror state</span>
-            <pre>
-              {JSON.stringify(editorState?.toJSON(), null, 2)}
-            </pre>
+            <pre>{JSON.stringify(editorState?.toJSON(), null, 2)}</pre>
           </div>
           <div>
             <span>Automerge state</span>
-            <pre>
-              {JSON.stringify(spans, null, 2)}
-            </pre>
+            <pre>{JSON.stringify(spans, null, 2)}</pre>
           </div>
         </div>
       )}
     </div>
   )
-
 }
 
 const paragraphAndHeadingSchemaAdapter = new SchemaAdapter({

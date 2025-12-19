@@ -58,7 +58,7 @@ export type EditorProps = {
   handle: DocHandle<unknown>
   path: Prop[]
   schemaAdapter: SchemaAdapter
-  onStateChange?: (state: EditorState) => void;
+  onStateChange?: (state: EditorState) => void
 }
 
 const toggleBold = (schema: Schema) => toggleMarkCommand(schema.marks.strong)
@@ -98,9 +98,14 @@ function turnSelectionIntoBlockquote(
   return true
 }
 
-export function Editor({ handle, path, schemaAdapter, onStateChange }: EditorProps) {
+export function Editor({
+  handle,
+  path,
+  schemaAdapter,
+  onStateChange,
+}: EditorProps) {
   const editorRoot = useRef<HTMLDivElement>(null)
-  const onChange = useRef(onStateChange);
+  const onChange = useRef(onStateChange)
   const [view, setView] = useState<EditorView | null>(null)
   const [imageModalOpen, setImageModalOpen] = useState(false)
   const [linkModalOpen, setLinkModalOpen] = useState(false)
